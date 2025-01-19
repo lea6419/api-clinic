@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BL.InterfaceServe;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication2.BL;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,18 +10,18 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class NourseControllre : ControllerBase
     {
-        private NurseService _nurseService;
-        public NourseControllre(NurseService nurseService)=>_nurseService = nurseService;
+        private INurseService _nurseService;
+        public NourseControllre(INurseService nurseService)=>_nurseService = nurseService;
         // GET: api/<BabyController>
         [HttpGet]
-        public List<Nurse> Get()
+        public IEnumerable<Nurse> Get()
         {
-            return _nurseService.GetNurse();
+            return _nurseService.GetList();
         }
         [HttpGet("id")]
         public Nurse Get(int id)
         {
-            return _nurseService.GetNurseId(id);
+            return _nurseService.GetById(id);
         }
 
         /// <summary>
@@ -36,23 +37,23 @@ namespace WebApplication2.Controllers
 
         // POST api/<BabyController>
         [HttpPost]
-        public void Post([FromBody] Nurse nurse)
+        public void Post( Nurse nurse)
         {
-            _nurseService.PostNurse(nurse);
+            _nurseService.Post(nurse);
         }
 
         // PUT api/<BabyController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Nurse nurse)
         {
-            _nurseService.UpdateNurse(nurse);
+            _nurseService.Update(nurse);
         }
 
         // DELETE api/<BabyController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _nurseService.DeleteNurse(id);
+            _nurseService.Delete(id);
         }
     }
 }

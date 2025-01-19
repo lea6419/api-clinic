@@ -13,14 +13,14 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class BabyController : ControllerBase
     {
-        private BabyService _babiesService;
-        public BabyController(BabyService babyService)=>  _babiesService = babyService;
+        private IBabyService _babiesService;
+        public BabyController(IBabyService babyService)=>  _babiesService = babyService;
        
         // GET: api/<BabyController>
         [HttpGet]
-        public List<Baby> Get()
+        public IEnumerable<Baby> Get()
         {
-            return _babiesService.GetBabies();
+            return _babiesService.GetList();
         }
         [HttpGet("id")]
         public Baby GetById(int id)
@@ -47,7 +47,7 @@ namespace WebApplication2.Controllers
         [HttpPost]
         public void Post([FromBody]  Baby baby)
         {
-            _babiesService.PostBaby(baby);
+            _babiesService.Post(baby);
         }
        
         // PUT api/<BabyController>/5
@@ -55,14 +55,14 @@ namespace WebApplication2.Controllers
         public void Put(int id, [FromBody] Baby baby)
         {
           
-            _babiesService.UpdateBaby(baby);
+            _babiesService.Update(baby);
         }
 
         // DELETE api/<BabyController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            _babiesService.DeleteBaby(id);
+            _babiesService.Delete(id);
         }
     }
 }

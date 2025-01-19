@@ -8,34 +8,34 @@ namespace WebApplication2.BL
     {
         IDataContext _dataContext;
         public NurseService(IDataContext daContext) => _dataContext = daContext;
- 
-        public Nurse GetNurseId(int id)
+        public void Delete(int id)
         {
-            return _dataContext.Nurses.Where(x => x.NurseId == id).FirstOrDefault();
+            _dataContext.Nurses.Remove(_dataContext.Nurses.ToList().Find(x => x.Id == id));
+            _dataContext.save();
         }
-        public List<Nurse> GetNurse()
+
+        public Nurse GetById(int id)
+        {
+            return _dataContext.Nurses.Where(x => x.Id == id).FirstOrDefault();
+        }
+
+        public List<Nurse> GetList()
         {
             return _dataContext.Nurses.ToList();
             _dataContext.save();
-
+           
         }
-        public void UpdateNurse( Nurse nurse)
+            public void Post(Nurse nurse)
         {
-                Nurse a = _dataContext.Nurses.ToList().Find(x => x.NurseId == nurse.NurseId);
-            a.NurseId = nurse.NurseId;
+            _dataContext.Nurses.Add(nurse);
+            _dataContext.save();
+        }
+
+        public void Update(Nurse nurse)
+        {
+            Nurse a = _dataContext.Nurses.ToList().Find(x => x.Id == nurse.Id);
+            a.Id = nurse.Id;
             //   a.Appointments = nurse.Appointments;
-            _dataContext.save();
-
-        }
-        public void PostNurse(Nurse nurse)
-        {
-            _dataContext.Nurses.Add( nurse);
-            _dataContext.save();
-
-        }
-        public void DeleteNurse(int id)
-        {
-            _dataContext.Nurses.Remove(_dataContext.Nurses.ToList().Find(x => x.NurseId == id));
             _dataContext.save();
         }
     }

@@ -37,37 +37,69 @@ namespace DL.Migrations
 
                     b.HasKey("AppointmentId");
 
+                    b.HasIndex("BabyId");
+
+                    b.HasIndex("NurseId");
+
                     b.ToTable("DL.IDataContext.Appointments");
                 });
 
             modelBuilder.Entity("WebApplication2.BL.Baby", b =>
                 {
-                    b.Property<int>("BabyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BabyId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BabyId");
+                    b.HasKey("Id");
 
                     b.ToTable("DL.IDataContext.Babies");
                 });
 
             modelBuilder.Entity("WebApplication2.BL.Nurse", b =>
                 {
-                    b.Property<int>("NurseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NurseId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.HasKey("NurseId");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("DL.IDataContext.Nurses");
+                });
+
+            modelBuilder.Entity("WebApplication2.BL.Appointment", b =>
+                {
+                    b.HasOne("WebApplication2.BL.Baby", "Baby")
+                        .WithMany("Appointment")
+                        .HasForeignKey("BabyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication2.BL.Nurse", "Nurse")
+                        .WithMany()
+                        .HasForeignKey("NurseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Baby");
+
+                    b.Navigation("Nurse");
+                });
+
+            modelBuilder.Entity("WebApplication2.BL.Baby", b =>
+                {
+                    b.Navigation("Appointment");
                 });
 #pragma warning restore 612, 618
         }

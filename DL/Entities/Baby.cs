@@ -6,7 +6,7 @@ namespace WebApplication2.BL
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Appointment Appointment { get; set; }
+        public List<Appointment> Appointment { get; set; }
 
         public Baby()
         {
@@ -16,7 +16,7 @@ namespace WebApplication2.BL
         {
             this.Id = v1;
             this.Name = v2;
-            this.Appointment = appointment;
+           // this.Appointment = appointment;
         }
 
         

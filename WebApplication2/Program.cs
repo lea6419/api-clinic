@@ -1,45 +1,48 @@
 using BL;
 using BL.InterfaceServe;
 using DL;
+using Microsoft.Data.SqlClient;
 using WebApplication2.BL;
 using WebApplication2.DL;
 
-namespace ClinicApi
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddRazorPages();
+builder.Services.AddSingleton<IDataContext, DataContext>();
+builder.Services.AddSingleton<IBabyService, BabyService>();
+builder.Services.AddSingleton<IAppointmentService, AppointmentService>();
+builder.Services.AddSingleton<INurseService, NurseService>();
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IDataContext, DataContext>();
-            builder.Services.AddSingleton<IBabyService, BabyService>();
-            builder.Services.AddSingleton<IAppointmentService, AppointmentService>();
-            builder.Services.AddSingleton<INurseService, NurseService>();
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 
-            app.MapControllers();
+var app = builder.Build();
+//app.UseCors("AllowAllOrigins");
 
-            app.Run();
-        }
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

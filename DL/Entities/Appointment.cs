@@ -6,6 +6,10 @@ namespace WebApplication2.BL
     {
         public int AppointmentId { get; set; }
         public int BabyId { get; set; }
+
+        public Baby Baby { get; set; }
         public int NurseId { get; set; }
+
+        public Nurse Nurse { get; set; }
     }
 }

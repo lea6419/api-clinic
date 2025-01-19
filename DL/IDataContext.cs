@@ -10,6 +10,7 @@ namespace DL
 {
     public interface IDataContext
     {
+
         public int save();
         public DbSet<Nurse> Nurses { get; set; }
         public DbSet<Baby> Babies { get; set; }

@@ -7,7 +7,7 @@ namespace WebApplication2.BL
     public class AppointmentService : IAppointmentService
     {
 
-        IDataContext _dataContext;
+        IDataContext _dataContext; 
         public AppointmentService(IDataContext daContext)
         {
             _dataContext = daContext;
@@ -16,9 +16,6 @@ namespace WebApplication2.BL
         {
             return _dataContext.Appointments.Where(x => x.AppointmentId == id).FirstOrDefault();
         }
-
-
-
 
         public List<Appointment> GetList()
         {
@@ -29,7 +26,7 @@ namespace WebApplication2.BL
         {
             _dataContext.Appointments.Add(appointment);
 
-            Nurse n = _dataContext.Nurses.ToList().Find(a => a.NurseId == appointment.NurseId);
+            Nurse n = _dataContext.Nurses.ToList().Find(a => a.Id == appointment.NurseId);
            // n.Appointments.Add(appointment);
             Baby b = _dataContext.Babies.ToList().Find(a => a.Id == appointment.BabyId);
             //b.Appointments.Add(appointment);
@@ -39,7 +36,7 @@ namespace WebApplication2.BL
         public void Update(Appointment appointment)
         {
             Appointment LastAppoitment = _dataContext.Appointments.ToList().Find(x => x.AppointmentId == appointment.AppointmentId);
-            Nurse LastNurse = _dataContext.Nurses.ToList().Find(x => x.NurseId == LastAppoitment.NurseId);
+            Nurse LastNurse = _dataContext.Nurses.ToList().Find(x => x.Id == LastAppoitment.NurseId);
         //    LastNurse.Appointments.Remove(LastAppoitment);
            // _dataContext.Nurses.ToList().Find(x => x.NurseId == appointment.NurseId).Appointments.Add(appointment);
 
@@ -55,7 +52,7 @@ namespace WebApplication2.BL
         {
             Appointment ap = _dataContext.Appointments.ToList().Find(x => x.AppointmentId == id);
             _dataContext.Appointments.Remove(ap);
-            Nurse n = _dataContext.Nurses.ToList().Find(a => a.NurseId == ap.NurseId);
+            Nurse n = _dataContext.Nurses.ToList().Find(a => a.Id == ap.NurseId);
           //  n.Appointments.Remove(ap);
             Baby b = _dataContext.Babies.ToList().Find(a => a.Id == ap.BabyId);
             //b.Appointments.Remove(ap);

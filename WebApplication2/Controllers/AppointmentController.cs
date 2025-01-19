@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BL.InterfaceServe;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication2.BL;
 
 
@@ -10,24 +11,24 @@ namespace WebApplication2.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
-        public readonly AppointmentService _appointmentService;
-        public AppointmentController(AppointmentService appointment) => _appointmentService = appointment;
+        public readonly IAppointmentService _appointmentService;
+        public AppointmentController(IAppointmentService appointment)
+        {
+            _appointmentService = appointment;
+        }
 
         // GET api/<AppointmentController>/5
         [HttpGet("{id}")]
-        public Appointment Get(int id)
-        {
-            return _appointmentService.GetById(id);
-        }
+        public Appointment Get(int id) => _appointmentService.GetById(id);
         [HttpGet]
-        public List<Appointment> Get()
+        public IEnumerable<Appointment> Get()
         {
             return _appointmentService.GetList();
         }
 
         // POST api/<AppointmentController>
         [HttpPost]
-        public void Post([FromBody] Appointment appointment)
+        public void Post(Appointment appointment)
         {
             try
             {
