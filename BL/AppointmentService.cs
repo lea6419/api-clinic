@@ -1,8 +1,8 @@
 ﻿using BL.InterfaceServe;
 using DL;
 using WebApplication2.DL;
-
-namespace WebApplication2.BL
+using Microsoft.EntityFrameworkCore;
+    namespace WebApplication2.BL
 {
     public class AppointmentService : IAppointmentService
     {
@@ -14,7 +14,7 @@ namespace WebApplication2.BL
         }
         public Appointment GetById(int id)
         {
-            return _dataContext.Appointments.Where(x => x.AppointmentId == id).FirstOrDefault();
+            return _dataContext.Appointments.Where(x => x.AppointmentId == id).Include(a=>a.Baby).Include(a => a.Nurse).FirstOrDefault();
         }
 
         public List<Appointment> GetList()

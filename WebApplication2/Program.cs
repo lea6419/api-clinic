@@ -2,11 +2,16 @@ using BL;
 using BL.InterfaceServe;
 using DL;
 using Microsoft.Data.SqlClient;
+using System.Text.Json.Serialization;
 using WebApplication2.BL;
 using WebApplication2.DL;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.WriteIndented = true;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddRazorPages();
